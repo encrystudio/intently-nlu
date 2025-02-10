@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "smarthome/entities/room": {
+      "automatically_extensible": false,
+      "map_synonyms": false,
+      "matching_strictness": 0,
+      "name": "smarthome/entities/room",
+      "values": {
+        "backyard": "garden",
+        "bedroom": "bedroom",
+        "garden": "garden",
+        "living room": "living room",
+        "lounge": "living room",
+        "main room": "living room",
+        "yard": "garden"
+      }
+    },
+    "smarthome/entities/temperature": {
+      "automatically_extensible": true,
+      "map_synonyms": true,
+      "matching_strictness": 0,
+      "name": "smarthome/entities/temperature",
+      "values": {
+        "100 degrees": "100 degrees",
+        "20 degrees": "20 degrees",
+        "normal": "20 degrees",
+        "warm": "20 degrees"
+      }
+    }
+  },
+  "intents": {
+    "smarthome/intents/setTemperature": {
+      "matching_strictness": 0,
+      "optional_slots": {
+        "room": "smarthome/entities/room"
+      },
+      "required_slots": {
+        "room_temperature": "smarthome/entities/temperature"
+      },
+      "utterances": [
+        "Set the temperature to [room_temperature] in the [room]",
+        "please set the [room]'s temperature to [room_temperature]",
+        "I want [room_temperature] in the [room] please",
+        "Can you increase the temperature to [room_temperature]?"
+      ]
+    },
+    "smarthome/intents/turnLightOff": {
+      "matching_strictness": 0,
+      "required_slots": {
+        "room": "smarthome/entities/room"
+      },
+      "utterances": [
+        "Turn off the lights in the [room]",
+        "turn the [room]'s light out please",
+        "switch off the light the [room], will you?",
+        "Switch the [room]'s lights off please"
+      ]
+    },
+    "smarthome/intents/turnLightOn": {
+      "matching_strictness": 0,
+      "required_slots": {
+        "room": "smarthome/entities/room"
+      },
+      "utterances": [
+        "Turn on the lights in the [room]",
+        "give me some light in the [room] please",
+        "Can you light up the [room]?",
+        "switch the [room]'s lights on please"
+      ]
+    }
+  },
+  "language": "en"
+}

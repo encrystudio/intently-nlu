@@ -1,0 +1,61 @@
+# turnLightOn intent
+---
+type: intent
+name: smarthome/intents/turnLightOn
+required_slots:
+  - name: room
+    entity: smarthome/entities/room
+utterances:
+  - Turn on the lights in the [room]
+  - give me some light in the [room] please
+  - Can you light up the [room]?
+  - switch the [room]'s lights on please
+
+# turnLightOff intent
+---
+type: intent
+name: smarthome/intents/turnLightOff
+required_slots:
+  - name: room
+    entity: smarthome/entities/room
+utterances:
+  - Turn off the lights in the [room]
+  - turn the [room]'s light out please
+  - switch off the light the [room], will you?
+  - Switch the [room]'s lights off please
+
+# setTemperature intent
+---
+type: intent
+name: smarthome/intents/setTemperature
+required_slots:
+  - name: room_temperature
+    entity: smarthome/entities/temperature
+optional_slots:
+  - name: room
+    entity: smarthome/entities/room
+utterances:
+  - Set the temperature to [room_temperature] in the [room]
+  - please set the [room]'s temperature to [room_temperature]
+  - I want [room_temperature] in the [room] please
+  - Can you increase the temperature to [room_temperature]?
+
+# room entity
+---
+type: entity
+name: smarthome/entities/room
+automatically_extensible: no
+values:
+  - bedroom
+  - [living room, main room, lounge]
+  - [garden, yard, backyard]
+
+# room temperature entity
+---
+type: entity
+name: smarthome/entities/temperature
+automatically_extensible: yes
+map_synonyms: yes
+values:
+  - 100 degrees
+  - [20 degrees, warm, normal]

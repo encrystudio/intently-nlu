@@ -1,0 +1,25 @@
+# turnLightOn intent
+---
+type: intent
+name: smarthome/intents/turnLightOn
+required_slots:
+  - name: room
+    entity: smarthome/entities/room
+utterances:
+  - Turn on the lights in the [room]
+  - give me some light in the [room] please
+  - Can you light up the [room]?
+  - switch the [room]'s lights on please
+
+# turnLightOff intent
+---
+type: intent
+name: smarthome/intents/turnLightOff
+required_slots:
+  - name: room
+    entity: smarthome/entities/room
+utterances:
+  - Turn off the lights in the [room]
+  - turn the [room]'s light out please
+  - switch off the light the [room], will you?
+  - Switch the [room]'s lights off please

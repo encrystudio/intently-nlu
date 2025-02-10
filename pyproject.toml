@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "intently-nlu"
+dynamic = ["version"]
+description = 'Python library to extract intention and structured information from sentences written in natural language.'
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+keywords = []
+authors = [
+  { name = "encrystudio", email = "epfl.business+py@proton.me" },
+  { name = "Clement Doumouro", email = "clement.doumouro@snips.ai" },
+  { name = "Adrien Ball", email = "adrien.ball@snips.ai" },
+]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Home Automation",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Topic :: Text Processing",
+  "Topic :: Text Processing :: Linguistic",
+  "Topic :: Utilities",
+  "Typing :: Typed",
+]
+dependencies = [
+  "dill~=0.3.9",
+  "platformdirs~=4.3.6",
+  "pyaml~=25.1.0",
+  "rapidfuzz~=3.11.0",
+  "requests~=2.32.3",
+  "sklearn-crfsuite>=0.5.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/encrystudio/intently-nlu#readme"
+Issues = "https://github.com/encrystudio/intently-nlu/issues"
+Source = "https://github.com/encrystudio/intently-nlu"
+
+[tool.hatch.version]
+path = "src/intently_nlu/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pipdeptree~=2.24.0",
+  "types-PyYAML~=6.0.12.20241230",
+  "types-requests~=2.32.0.20241016",
+]
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy~=1.14.1",
+  "types-PyYAML~=6.0.12.20241230",
+  "types-requests~=2.32.0.20241016",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/intently_nlu tests}"
+
+[tool.coverage.run]
+source_pkgs = ["intently_nlu", "tests"]
+branch = true
+parallel = true
+omit = ["src/intently_nlu/__about__.py"]
+
+[tool.coverage.paths]
+intently_nlu = ["src/intently_nlu", "*/intently-nlu/src/intently_nlu"]
+tests = ["tests", "*/intently-nlu/tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[tool.mypy]
+check_untyped_defs = true
