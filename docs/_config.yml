@@ -3,13 +3,6 @@ description: Documentation for the Intently NLU library.
 repository: encrystudio/intently-nlu
 theme: "just-the-docs"
 
-defaults:
-  - scope:
-      path: "docs"
-      type: "pages"
-    values:
-      layout: "default"
-
 search_enabled: true
 enable_copy_code_button: true
 heading_anchors: true
