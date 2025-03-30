@@ -1,6 +1,7 @@
 """The main engine"""
 
 import os
+from pathlib import Path
 
 import dill  # type: ignore
 
@@ -9,7 +10,7 @@ from intently_nlu.builtin_entities import BUILTIN_ENTITY_ENTITY_PARSERS
 from intently_nlu.dataset.dataset import Dataset, Entity
 from intently_nlu.dataset.intent import Intent
 from intently_nlu.entity_parsers import EntityParser
-from intently_nlu.exceptions import DatasetNotValid
+from intently_nlu.exceptions import DatasetNotValid, ModelVersionError
 from intently_nlu.nlu_engine.nlu_engine_config import IntentlyNLUEngineConfig
 from intently_nlu.nlu_engine.nlu_result import IntentlyNLUResult
 from intently_nlu.util.decorators.timing import elapsed_time
@@ -53,6 +54,7 @@ class IntentlyNLUEngine:
         )
         self.language: str = ""
         self.fitted = False
+        self.version = __model_version__
         self.logger.debug("Instance of `IntentlyNLUEngine` created: %s", self)
 
     @elapsed_time("Engine fitted in", warn_if_more_than=1)
@@ -226,12 +228,11 @@ class IntentlyNLUEngine:
 
     @elapsed_time("Engine persisted in", warn_if_more_than=1)
     @fitted_required
-    def persist(self, directory: str, filename: str) -> str:
+    def persist(self, engine_out: str) -> str:
         """Save the whole engine instance and its state in one file
 
         Args:
-            directory (str): Where to store the file.
-            filename (str): Name of the file. The actual name results in "`filename`.inlue`<model_version>`".
+            engine_out (str): Path where the engine will be saved to.
 
         Raises:
            FileNotFoundError: The specified directory does not exist
@@ -240,17 +241,19 @@ class IntentlyNLUEngine:
             str: Output path.
         """
         self.logger.debug("Persist engine...")
-        self.logger.debug(" Directory: %s; name: %s", directory, filename)
-        if not os.path.exists(directory):
+        self.logger.debug(" Path: %s", engine_out)
+        if not os.path.exists(Path(engine_out).parent):
             self.logger.error(
                 "Cannot persist engine: The specified directory does not exist: %s",
-                directory,
+                Path(engine_out).parent,
             )
             e = FileNotFoundError(
-                f"Cannot persist engine: The specified directory does not exist: {directory}"
+                f"Cannot persist engine: The specified directory does not exist: {Path(engine_out).parent}"
             )
             raise log_error(self.logger, e, "Persist engine") from e
-        file_path = os.path.join(directory, filename + ".inlue" + __model_version__)
+        file_path = engine_out
+        if file_path[-6:] != ".inlue":
+            file_path = file_path + ".inlue"
         self.logger.debug(" Path: %s", file_path)
 
         self.logger.debug(" Dump...")
@@ -265,31 +268,33 @@ class IntentlyNLUEngine:
     @classmethod
     @elapsed_time("Engine loaded in", warn_if_more_than=1)
     def from_file(
-        cls: type["IntentlyNLUEngine"], directory: str, filename: str
+        cls: type["IntentlyNLUEngine"],
+        engine_path: str,
+        ignore_version: bool = False,
     ) -> "IntentlyNLUEngine":
         """Load an instance of `IntentlyNLUEngine` from a file created earlier by `IntentlyNLUEngine.persist()`
 
         Args:
-            directory (str): Where the file is stored.
-            filename (str): Name of the engine.
+            engine_path (str): Path to a trained engine file.
+            ignore_version (bool, optional): Do not check the version. Defaults to False.
 
         Raises:
             FileNotFoundError: If the file is not found.
             TypeError: If the file is not valid.
+            ModelVersionError: If the loaded engine version is too old
 
         Returns:
             IntentlyNLUEngine: The loaded instance if valid.
         """
         logger = get_logger(__name__)
         logger.debug("Recreate engine from file...")
-        file_path = os.path.join(directory, filename + ".inlue" + __model_version__)
-        logger.debug(" Path: %s", file_path)
-        if not os.path.exists(file_path):
-            e = FileNotFoundError(f"The specified file does not exist: {file_path}")
+        logger.debug(" Path: %s", engine_path)
+        if not os.path.exists(engine_path):
+            e = FileNotFoundError(f"The specified file does not exist: {engine_path}")
             raise log_error(logger, e, "Recreate engine from file") from e
 
         logger.debug("  Load engine...")
-        with open(file_path, "rb") as f:
+        with open(engine_path, "rb") as f:
             loaded_instance = dill.load(f)  # type: ignore
         logger.debug("  Load engine...Done!")
         # Validate that the loaded object is an instance of IntentlyNLUEngine
@@ -298,6 +303,13 @@ class IntentlyNLUEngine:
                 f"The loaded object ({type(loaded_instance)}) is not an instance of {cls.__name__}."
             )
             raise log_error(logger, e2, "Recreate engine from file") from e2
+
+        if not ignore_version and loaded_instance.version < __model_version__:
+            e3 = ModelVersionError(
+                f"""The loaded engine was trained with model version {loaded_instance.version}.
+                The current version is {__model_version__}. Retrain the engine."""
+            )
+            raise log_error(logger, e3, "Recreate engine from file") from e3
 
         logger.debug("Load engine from file...Done!")
         loaded_instance.logger.info("Engine was recreated from file.")

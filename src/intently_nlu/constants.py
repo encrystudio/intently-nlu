@@ -37,5 +37,5 @@ NONE_LABEL = "NONE"
 BUILTIN_ENTITY_NAMES = ["intently/entities/number"]
 
 # languages
-OFFICIALLY_SUPPORTED_LANGUAGES = ["de", "en", "es", "fr", "it", "ja", "ko", "pt_br", "pt_pt"]
+OFFICIALLY_SUPPORTED_LANGUAGES = ["de", "en", "es", "fr", "it", "ja", "ko", "pt"]
 PUNCTUATION = "punctuation"

@@ -10,10 +10,22 @@ def add_cleanup_parser(subparsers, formatter_class) -> None:  # type: ignore
     subparser = subparsers.add_parser(  # type: ignore
         "cleanup",
         formatter_class=formatter_class,
-        help="Delete logs and/or remove downloaded resources (TODO)",
+        help="Delete logs and/or remove downloaded resources",
     )
-    subparser.add_argument("-l", "--log_file", type=bool, help="Delete the logs.", default=True)  # type: ignore
-    subparser.add_argument("-r", "--resources", type=bool, help="Delete downloaded resources.", default=True)  # type: ignore # pylint: disable=C0301
+    subparser.add_argument(
+        "-l",
+        "--log_file",
+        action="store_true",
+        help="Delete the logs.",
+        default=False,
+    )
+    subparser.add_argument(
+        "-r",
+        "--resources",
+        action="store_true",
+        help="Delete downloaded resources.",
+        default=False,
+    )
     subparser.set_defaults(func=_cleanup)  # type: ignore
 
 
@@ -26,6 +38,7 @@ def cleanup(delete_logfile: bool, delete_resources: bool) -> None:
 
     Args:
         delete_logfile (bool): If true, deletes the content of the log file.
+        delete_resources (bool): If true, deletes the downloaded resources.
     """
     from intently_nlu.util.intently_logging import (  # pylint: disable=import-outside-toplevel
         get_logger,

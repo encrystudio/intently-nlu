@@ -9,10 +9,7 @@ def add_parse_parser(subparsers, formatter_class) -> None:  # type: ignore
         help="Load a trained IntentlyNLU engine and perform parsing",
     )
     subparser.add_argument(  # type: ignore
-        "training_dir", type=str, help="Directory of a trained engine"
-    )
-    subparser.add_argument(  # type: ignore
-        "name", type=str, help="Name of a trained engine"
+        "engine", type=str, help="Path to a trained engine file"
     )
     subparser.add_argument(  # type: ignore
         "-q",
@@ -24,15 +21,14 @@ def add_parse_parser(subparsers, formatter_class) -> None:  # type: ignore
 
 
 def _parse(args_namespace) -> None:  # type: ignore
-    parse(args_namespace.training_dir, args_namespace.name, args_namespace.query)  # type: ignore
+    parse(args_namespace.engine, args_namespace.query)  # type: ignore
 
 
-def parse(training_dir: str, name: str, query: str | None) -> None:
+def parse(engine: str, query: str | None) -> None:
     """Load a trained IntentlyNLU engine and play with its parsing API interactively.
 
     Args:
-        training_dir (str): Directory of a trained engine.
-        name (str): Name of the trained engine.
+        engine (str): Path to a trained engine file.
         query (str, optional): Query to parse. If provided, it disables the interactive behavior.
     """
     # pylint: disable=import-outside-toplevel
@@ -44,14 +40,18 @@ def parse(training_dir: str, name: str, query: str | None) -> None:
     logger = get_logger(__name__)
     logger.info("Parse command startet!")
     logger.debug("  Load engine from file...")
-    engine: IntentlyNLUEngine = IntentlyNLUEngine.from_file(training_dir, name)
+    engine: IntentlyNLUEngine = IntentlyNLUEngine.from_file(engine)
     logger.debug("  Load engine from file...Done!")
 
     if query is not None:
         logger.debug("  Perform parsing...")
-        result_json = json_string(engine.parse_utterance(query))
-        print(result_json)
-        logger.info("       RESULT: %s", result_json.__dict__)
+        result: IntentlyNLUResult | None = engine.parse_utterance(query)
+        if result is None:
+            print("None")
+            logger.info("       RESULT: None")
+        else:
+            print(json_string(result.__dict__))
+            logger.info("       RESULT: %s", json_string(result.__dict__))
         logger.debug("  Perform parsing...Done!")
         logger.info("Parse command finished!")
         return

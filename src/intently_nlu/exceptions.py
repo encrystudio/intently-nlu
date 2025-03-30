@@ -27,3 +27,7 @@ class RuntimeMLError(IntentlyNLUError):
 
 class ResourceError(IntentlyNLUError):
     """Raised if an issue related to local resources occurs."""
+
+
+class ModelVersionError(IntentlyNLUError):
+    """Raised if a loaded engine has an incompatible version."""

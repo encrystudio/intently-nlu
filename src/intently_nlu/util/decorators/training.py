@@ -17,7 +17,7 @@ def fitted_required(func: Callable[..., T]) -> Callable[..., T]:
     def func_wrapper(self: Any, *args: Any, **kwargs: Any):
         if not self.fitted:
             e = NotTrained(
-                f"{self.__name__} must be fitted before calling {func.__name__}."
+                f"{self.__class__} must be fitted before calling {func.__name__}."
             )
             raise log_error(
                 get_logger(__name__), e, "Action with fitted required"

@@ -13,8 +13,7 @@ def add_train_parser(subparsers, formatter_class) -> None:  # type: ignore
     subparser.add_argument(  # type: ignore
         "dataset_path", type=str, help="Path to the JSON training dataset file"
     )
-    subparser.add_argument("output_dir", type=str, help="Directory of the output model")  # type: ignore
-    subparser.add_argument("name", type=str, help="Name of the output model")  # type: ignore
+    subparser.add_argument("engine_out", type=str, help="Path to store the trained engine as a file.")  # type: ignore
     subparser.add_argument(  # type: ignore
         "-c", "--config_path", type=str, help="Path to a NLU engine configuration JSON)"
     )
@@ -24,21 +23,17 @@ def add_train_parser(subparsers, formatter_class) -> None:  # type: ignore
 def _train(args_namespace) -> None:  # type: ignore
     train(
         args_namespace.dataset_path,  # type: ignore
-        args_namespace.output_dir,  # type: ignore
-        args_namespace.name,  # type: ignore
+        args_namespace.engine_out,  # type: ignore
         args_namespace.config_path,  # type: ignore
     )
 
 
-def train(
-    dataset_path: str, output_dir: str, name: str, config_path: str | None
-) -> None:
+def train(dataset_path: str, engine_out: str, config_path: str | None) -> None:
     """Train an IntentlyNLU engine with the provided JSON dataset
 
     Args:
         dataset_path (str): Path to the JSON dataset.
-        output_dir (str): Path where the engine will be saved to.
-        name (str): Name of the engine to be saved.
+        engine_out (str): Path where the engine will be saved to.
         config_path (str, optional): Path to an IntentlyNLU engine configuration JSON,
                                      if provided it will be used to override the default configuration.
     """
@@ -73,7 +68,7 @@ def train(
     logger.info("   Create and train the engine...Done!")
 
     logger.info("   Persisting the engine...")
-    path = engine.persist(output_dir, name)
+    path = engine.persist(engine_out)
     logger.info("   Persisting the engine...Done!")
 
     print(path)
