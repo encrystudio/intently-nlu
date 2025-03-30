@@ -9,6 +9,7 @@ description = 'Python library to extract intention and structured information fr
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
 keywords = []
 authors = [
   { name = "encrystudio", email = "epfl.business+py@proton.me" },
@@ -47,7 +48,8 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/encrystudio/intently-nlu#readme"
+Homepage = "https://encrystudio.github.io/intently-nlu"
+Documentation = "https://encrystudio.github.io/intently-nlu"
 Issues = "https://github.com/encrystudio/intently-nlu/issues"
 Source = "https://github.com/encrystudio/intently-nlu"
 
