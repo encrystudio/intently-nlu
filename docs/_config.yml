@@ -20,6 +20,7 @@ color_scheme: dark
 
 plugins:
   - jekyll-relative-links
+  - jekyll-remote-theme
 
 relative_links:
   enabled: true
