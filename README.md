@@ -12,7 +12,6 @@ Intently NLU is a Python library that allows to extract the intention and struct
   - [State](#state)
   - [About](#about)
   - [Getting Started](#getting-started)
-  - [API Usage](#api-usage)
   - [Sample datasets](#sample-datasets)
   - [Documentation](#documentation)
   - [Contributing](#contributing)
@@ -55,11 +54,7 @@ The motivation of this project is to create a robust, fast and easy-to-use nlu l
 
 ## Getting Started
 
-TODO
-
-## API Usage
-
-TODO
+See the [Quick Start Guide](https://encrystudio.github.io/intently-nlu/quickstart.html) for more information on how to get started with Intently NLU.
 
 ## Sample datasets
 
@@ -69,11 +64,11 @@ Here is a list of some datasets that can be used to train am Intently NLU engine
 
 ## Documentation
 
-TODO
+The documentation can be found [here](https://encrystudio.github.io/intently-nlu).
 
 ## Contributing
 
-TODO
+You can contribute to this project by submitting issues, creating pull requests or improving the documentation.
 
 ## License
 
