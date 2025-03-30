@@ -19,8 +19,8 @@ Intently NLU is a Python library that allows to extract the intention and struct
 
 ## State
 
-Currently in phase 1: planning
-Documentation is missing or not complete!
+Currently in phase 2: Pre-Alpha
+The library may work, but is not ready for production.
 
 ## About
 
