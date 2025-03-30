@@ -21,6 +21,16 @@ color_scheme: dark
 plugins:
   - jekyll-relative-links
   - jekyll-remote-theme
+  - jemoji
 
 relative_links:
   enabled: true
+
+search:
+  heading_level: 4
+  previews: 3
+  preview_words_before: 5
+  preview_words_after: 10
+  rel_url: true
+  button: false
+  focus_shortcut_key: 'k'
