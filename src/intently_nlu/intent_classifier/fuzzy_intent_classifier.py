@@ -7,8 +7,7 @@ from rapidfuzz import fuzz
 
 from intently_nlu.dataset.dataset import Dataset
 from intently_nlu.dataset.intent import Intent
-from intently_nlu.util.decorators.training import (fitted_required,
-                                                   update_settings)
+from intently_nlu.util.decorators.training import fitted_required, update_settings
 from intently_nlu.util.intently_logging import get_logger
 from intently_nlu.util.normalization import normalize
 
@@ -71,9 +70,12 @@ class FuzzyIntentClassifier(IntentClassifier):
         self.logger.debug("Classify...")
         best_match: Intent | None = None
         best_score = 0.0
+        normalized_text = self._normalized(text)
 
         for utterance, intent in self.normalized_intent_utterances.items():
-            ratio = (fuzz.ratio(self._normalized(text), utterance)) / 100
+            ratio1 = fuzz.ratio(normalized_text, utterance)
+            ratio2 = fuzz.token_sort_ratio(normalized_text, utterance)
+            ratio = (ratio1 + ratio2) / 2 / 100
             if ratio > best_score:
                 best_match = intent
                 best_score = ratio
@@ -91,9 +93,12 @@ class FuzzyIntentClassifier(IntentClassifier):
         self.logger = get_logger(__name__)
         self.logger.debug("Classify all...")
         parsed_intents: list[tuple[Intent, float]] = []
+        normalized_text = self._normalized(text)
 
         for utterance, intent in self.normalized_intent_utterances.items():
-            ratio = (fuzz.ratio(self._normalized(text), utterance)) / 100
+            ratio1 = fuzz.ratio(normalized_text, utterance)
+            ratio2 = fuzz.token_sort_ratio(normalized_text, utterance)
+            ratio = (ratio1 + ratio2) / 2 / 100
             parsed_intents.append((intent, ratio))
 
         if not parsed_intents:
