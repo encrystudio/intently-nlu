@@ -24,11 +24,11 @@ def _parse(args_namespace) -> None:  # type: ignore
     parse(args_namespace.engine, args_namespace.query)  # type: ignore
 
 
-def parse(engine: str, query: str | None) -> None:
+def parse(engine_path: str, query: str | None) -> None:
     """Load a trained IntentlyNLU engine and play with its parsing API interactively.
 
     Args:
-        engine (str): Path to a trained engine file.
+        engine_path (str): Path to a trained engine file.
         query (str, optional): Query to parse. If provided, it disables the interactive behavior.
     """
     # pylint: disable=import-outside-toplevel
@@ -40,7 +40,7 @@ def parse(engine: str, query: str | None) -> None:
     logger = get_logger(__name__)
     logger.info("Parse command startet!")
     logger.debug("  Load engine from file...")
-    engine: IntentlyNLUEngine = IntentlyNLUEngine.from_file(engine)
+    engine: IntentlyNLUEngine = IntentlyNLUEngine.from_file(engine_path)
     logger.debug("  Load engine from file...Done!")
 
     if query is not None:

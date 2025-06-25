@@ -12,14 +12,14 @@ def add_cleanup_parser(subparsers, formatter_class) -> None:  # type: ignore
         formatter_class=formatter_class,
         help="Delete logs and/or remove downloaded resources",
     )
-    subparser.add_argument(
+    subparser.add_argument(  # type: ignore
         "-l",
         "--log_file",
         action="store_true",
         help="Delete the logs.",
         default=False,
     )
-    subparser.add_argument(
+    subparser.add_argument(  # type: ignore
         "-r",
         "--resources",
         action="store_true",

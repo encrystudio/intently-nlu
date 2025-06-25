@@ -43,7 +43,7 @@ class Dataset:
 
     language: str
     intents: dict[str, Intent]
-    custom_entities: dict[str, Entity] = field(default_factory=dict)
+    custom_entities: dict[str, Entity] = field(default_factory=dict[str, Entity])
 
     @property
     def is_valid(self) -> bool:
