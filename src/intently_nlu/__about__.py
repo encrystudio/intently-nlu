@@ -11,6 +11,6 @@ __email__ = (
 )
 __license__ = "Apache License, Version 2.0"
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __model_version__ = "2"
 __resource_location__ = "https://raw.githubusercontent.com/encrystudio/intently-nlu/refs/heads/main/resources/"

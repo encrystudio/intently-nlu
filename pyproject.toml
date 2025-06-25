@@ -40,10 +40,10 @@ classifiers = [
 ]
 dependencies = [
   "dill~=0.3.9",
-  "platformdirs~=4.3.6",
-  "pyaml~=25.1.0",
-  "rapidfuzz~=3.11.0",
-  "requests~=2.32.3",
+  "platformdirs~=4.3.8",
+  "pyaml~=25.5.0",
+  "rapidfuzz~=3.13.0",
+  "requests~=2.32.4",
   "sklearn-crfsuite>=0.5.0",
 ]
 

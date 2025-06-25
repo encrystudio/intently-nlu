@@ -64,7 +64,7 @@ Here is a list of some datasets that can be used to train am Intently NLU engine
 
 ## Documentation
 
-The documentation can be found [here](https://encrystudio.github.io/intently-nlu).
+[The documentation can be found here](https://encrystudio.github.io/intently-nlu).
 
 ## Contributing
 
