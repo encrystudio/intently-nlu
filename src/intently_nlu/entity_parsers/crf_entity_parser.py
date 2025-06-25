@@ -93,9 +93,7 @@ class CRFEntityParser(EntityParser):
         parsed_slot: str | None = None
 
         self.logger.debug(" Run model...")
-        split_utterance = (
-            text.strip().split()
-        )  # TODO: entities with more than one word cannot be parsed. fix?
+        split_utterance = text.strip().split()
         x = [sentence_to_features(split_utterance)]
         predicted_labels: list[str] = self.crf.predict(x)[0].tolist()  # type: ignore
         probabilities = self.crf.predict_marginals(x)[0]  # type: ignore
@@ -120,7 +118,14 @@ class CRFEntityParser(EntityParser):
             )
             predicted_labels[min_confidence_index] = self.slot
 
-        parsed_slot = split_utterance[predicted_labels.index(self.slot)]
+        slot_tokens = [
+            token
+            for token, label in zip(split_utterance, predicted_labels)
+            if label == self.slot
+        ]
+        parsed_slot = " ".join(slot_tokens) if slot_tokens else None
+        if not parsed_slot:
+            return None
 
         if (
             not self.intent.all_slots[self.slot].automatically_extensible

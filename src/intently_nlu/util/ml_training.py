@@ -117,11 +117,19 @@ def utterance_data_augmentation(
                     if slot == label:
                         found = True
                         for value in entity.values:
-                            utterance_to_replace = replaced_utterance[0][:]
-                            utterance_to_replace[index] = value
-                            replaced_utterances.append(
-                                (utterance_to_replace, replaced_utterance[1][:])
+                            value_tokens = value.split()
+                            label_tokens = [slot] * len(value_tokens)
+                            new_tokens = (
+                                replaced_utterance[0][:index]
+                                + value_tokens
+                                + replaced_utterance[0][index + 1 :]
                             )
+                            new_labels = (
+                                replaced_utterance[1][:index]
+                                + label_tokens
+                                + replaced_utterance[1][index + 1 :]
+                            )
+                            replaced_utterances.append((new_tokens, new_labels))
                 if found:
                     replaced_utterances.remove(replaced_utterance)
         data += replaced_utterances
